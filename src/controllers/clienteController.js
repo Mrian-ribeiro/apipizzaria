@@ -3,7 +3,7 @@ import joi from 'joi';
 
 export const clienteCreateSchema = joi.object({
     cpf: joi.string().length(11).required(),
-    nome: joi.string().required.max(100),
+    nome: joi.string().required().max(100),
     endereco: joi.string().required().max(100),
     bairro: joi.string().max(30).allow(''),
     cidade: joi.string().max(30).allow(''),
@@ -75,7 +75,7 @@ export const atualizarCliente = async (req, res) => {
     }
 };
 
-export const deletearCliente = async (req, res) => {
+export const deletarCliente = async (req, res) => {
     try {
         const { cpf } = req.params
         const deleted = await clienteService.remove(cpf);

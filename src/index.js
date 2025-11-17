@@ -8,7 +8,15 @@ import morgan from 'morgan';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url'; // necessario para recriar o '_dirname'
-import db from './db/db.js'; // excluir depois
+
+
+//importando as rotas
+// importa as rotas de autenticação
+import clieteRoutes from './routes/clienteRoutes.js';
+
+import authRoutes from './routes/authRoutes.js'
+
+import produtoRoutes from './routes/produtoRoutes.js'
 
 
 // Configuração
@@ -44,6 +52,14 @@ app.get('/', (request, response) => {
     response.sendFile(path.join(_dirname,'..','pages','home.html'));
 })
 
+//Rotas da API prefixadas, isso evita conflitos e deixa claro quais rotas pertencem à API
+
+const apiPrefix = '/api';
+//Rotas gerais da API
+app.use(`${apiPrefix}/clientes`, clieteRoutes); // ex: /api/clientes/
+app.use(`${apiPrefix}/login`, authRoutes); //Rota de login ex:/api/login
+app.use(`${apiPrefix}/produtos`, produtoRoutes)// ex: /api/produtos/
+
 // --TRATAMENTO DE ERROS --
 app.use((err, req, res, next) => {
     console.error(err.stack);
@@ -57,10 +73,10 @@ app.listen(PORTA, () => {
 })
 
 //seus dados mockados (simulando o banco de dados)
-const listaDeClientes = [
-    {id: 1, nome: "João Silva", email: "joao.silva@exemple.com" },
-    {id: 2, nome: "Maria Santos", email: "maria.santos@exemple.com" }
-]
+// const listaDeClientes = [
+//     {id: 1, nome: "João Silva", email: "joao.silva@exemple.com" },
+//     {id: 2, nome: "Maria Santos", email: "maria.santos@exemple.com" }
+// ]
 
 //Rota para listar Todos os clientes (seu codigo original)
 app.get('/clientes', (req, res) => {
